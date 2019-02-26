@@ -14,7 +14,7 @@ interface UIView<U : UIState> {
 
     fun uiActionHandlerConfiguration(): UIActionHandler.Configuration
 
-    fun uiActionDataObservable(): Observable<UIAction.Input>
+    fun uiActionInputObservable(): Observable<UIAction.Input>
 
     fun render(uiState: U)
 }

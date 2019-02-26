@@ -43,7 +43,7 @@ class CounterActivity : UIViewActivity<CounterActivityUIState>() {
     override fun uiActionHandlerConfiguration() = uiActionConfig
 
     // Using RxBindings to trigger UIActions.
-    override fun uiActionDataObservable(): Observable<UIAction.Input> {
+    override fun uiActionInputObservable(): Observable<UIAction.Input> {
         return Observable.mergeArray(
                 incrementButton
                         .clicks()
