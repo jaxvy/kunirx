@@ -58,7 +58,7 @@ class UIActionHandler<U : UIState>(
     }
 
     // Helps initialize the UIActionHandler with provided Schedulers and uiActions
-    abstract class Configuration(val uiActions: List<UIAction<*, *, *>>) {
+    abstract class Configuration(val uiActions: List<UIAction<*, *, *>> = emptyList()) {
         abstract val mainScheduler: Scheduler
 
         abstract val ioScheduler: Scheduler
