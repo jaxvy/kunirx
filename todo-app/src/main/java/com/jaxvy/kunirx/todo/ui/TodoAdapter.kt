@@ -5,10 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jaxvy.kunirx.todo.R
+import com.jaxvy.kunirx.todo.model.Todo
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.todo_adapter_item.*
-
-class Todo(val text: String)
 
 class TodoAdapter : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
 
