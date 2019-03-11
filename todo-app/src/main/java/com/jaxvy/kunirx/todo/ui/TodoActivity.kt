@@ -13,6 +13,7 @@ import com.jaxvy.kunirx.todo.di.MainScheduler
 import com.jaxvy.kunirx.todo.di.inject
 import com.jaxvy.kunirx.todo.model.Todo
 import com.jaxvy.kunirx.todo.ui.action.OpenTodosViewUIAction
+import com.jaxvy.kunirx.todo.ui.action.UpdateTodoCheckmarkUIAction
 import dagger.Reusable
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -28,9 +29,13 @@ data class TodoActivityUIState(
 class TodoActivityUIActionConfig @Inject constructor(
     @MainScheduler override var mainScheduler: Scheduler,
     @IOScheduler override var ioScheduler: Scheduler,
-    openTodosViewUIAction: OpenTodosViewUIAction
+    openTodosViewUIAction: OpenTodosViewUIAction,
+    updateTodoCheckmarkUIAction: UpdateTodoCheckmarkUIAction
 ) : UIActionHandler.Configuration(
-    uiActions = listOf(openTodosViewUIAction)
+    uiActions = listOf(
+        openTodosViewUIAction,
+        updateTodoCheckmarkUIAction
+    )
 )
 
 class TodoActivity : UIViewActivity<TodoActivityUIState>() {
@@ -69,6 +74,12 @@ class TodoActivity : UIViewActivity<TodoActivityUIState>() {
     }
 
     override fun uiActionInputObservable(): Observable<UIAction.Input> {
-        return Observable.just(OpenTodosViewUIAction.Input())
+        return Observable
+            .mergeArray(
+                todoAdapter.uiActionInputObservable().map {
+                    it
+                }
+            )
+            .startWith(OpenTodosViewUIAction.Input())
     }
 }

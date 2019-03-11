@@ -1,21 +1,20 @@
 package com.jaxvy.kunirx.todo.repository
 
 import com.jaxvy.kunirx.todo.model.Todo
-import dagger.Reusable
-import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@Reusable
+@Singleton
 class TodoRepository @Inject constructor() {
 
     private val todos: MutableList<Todo> = mutableListOf()
 
     init {
-        (1..10).forEach { create("todo item$it") }
+        (1..100).forEach { create(id = it.toLong(), text = "todo item$it") }
     }
 
-    fun create(text: String) {
-        todos.add(Todo(id = Date().time, text = text))
+    fun create(id: Long, text: String) {
+        todos.add(Todo(id = id, text = text))
     }
 
     fun getById(id: Long): Todo? = todos.find { it.id == id }
