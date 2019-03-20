@@ -10,6 +10,7 @@ import com.jaxvy.kunirx.todo.R
 import com.jaxvy.kunirx.todo.model.Todo
 import com.jaxvy.kunirx.todo.ui.action.UpdateTodoCheckmarkUIAction
 import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.adapter_item_todo.*
@@ -18,11 +19,8 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
 
     private var todos: List<Todo> = emptyList()
 
-    private var uiActionInputSubject = PublishSubject.create<UIAction.Input>()
-
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        uiActionInputSubject.onComplete()
-    }
+    private val disposableMap = mutableMapOf<TodoViewHolder, Disposable?>()
+    private val uiActionInputSubject = PublishSubject.create<UIAction.Input>()
 
     fun update(todos: List<Todo>) {
         this.todos = todos
@@ -36,9 +34,7 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
                 parent,
                 false
             )
-        ).also {
-            it.uiEvents().subscribe(uiActionInputSubject)
-        }
+        )
     }
 
     override fun getItemCount(): Int = todos.size
@@ -73,5 +69,20 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
                 isChecked = todo.isComplete
             }
         }
+    }
+
+    override fun onViewAttachedToWindow(holder: TodoViewHolder) {
+        super.onViewAttachedToWindow(holder)
+
+        disposableMap[holder]?.dispose()
+        disposableMap[holder] = holder.uiEvents().subscribe {
+            uiActionInputSubject.onNext(it)
+        }
+    }
+
+    override fun onViewDetachedFromWindow(holder: TodoViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+
+        disposableMap[holder]?.dispose()
     }
 }
