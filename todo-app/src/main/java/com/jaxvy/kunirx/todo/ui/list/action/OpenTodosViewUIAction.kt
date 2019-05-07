@@ -1,9 +1,9 @@
-package com.jaxvy.kunirx.todo.ui.list
+package com.jaxvy.kunirx.todo.ui.list.action
 
 import com.jaxvy.kunirx.UIAction
 import com.jaxvy.kunirx.todo.model.Todo
 import com.jaxvy.kunirx.todo.repository.TodoRepository
-import com.jaxvy.kunirx.todo.ui.TodoActivityUIState
+import com.jaxvy.kunirx.todo.ui.list.TodoActivityUIState
 import dagger.Reusable
 import io.reactivex.Observable
 import java.util.concurrent.TimeUnit

@@ -1,5 +1,6 @@
 package com.jaxvy.kunirx.todo.di
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
@@ -17,7 +18,7 @@ annotation class IOScheduler
 annotation class MainScheduler
 
 @Module
-class TodoModule {
+class TodoModule(private val applicationContext: Context) {
 
     @Singleton
     @Provides
@@ -31,5 +32,10 @@ class TodoModule {
     @Provides
     fun provideMainScheduler(): Scheduler {
         return AndroidSchedulers.mainThread()
+    }
+
+    @Provides
+    fun provideApplicationContext(): Context {
+        return applicationContext
     }
 }

@@ -14,7 +14,7 @@ class TodoApplication : Application() {
         super.onCreate()
 
         todoComponent = DaggerTodoComponent.builder()
-            .todoModule(TodoModule())
+            .todoModule(TodoModule(applicationContext))
             .build()
 
     }

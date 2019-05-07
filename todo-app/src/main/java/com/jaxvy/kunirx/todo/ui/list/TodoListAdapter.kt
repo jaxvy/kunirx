@@ -1,4 +1,4 @@
-package com.jaxvy.kunirx.todo.ui
+package com.jaxvy.kunirx.todo.ui.list
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import com.jakewharton.rxbinding3.widget.checkedChanges
 import com.jaxvy.kunirx.UIAction
 import com.jaxvy.kunirx.todo.R
 import com.jaxvy.kunirx.todo.model.Todo
-import com.jaxvy.kunirx.todo.ui.list.UpdateTodoCheckmarkUIAction
+import com.jaxvy.kunirx.todo.ui.list.action.UpdateTodoCheckmarkUIAction
 import com.jaxvy.kunirx.todo.utils.KunirxAdapter
 import com.jaxvy.kunirx.todo.utils.KunirxViewHolder
 import io.reactivex.Observable

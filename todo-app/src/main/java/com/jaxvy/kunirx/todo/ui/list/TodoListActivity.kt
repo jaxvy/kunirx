@@ -1,4 +1,4 @@
-package com.jaxvy.kunirx.todo.ui
+package com.jaxvy.kunirx.todo.ui.list
 
 import android.os.Bundle
 import android.view.View
@@ -9,17 +9,17 @@ import com.jaxvy.kunirx.UIActionHandler
 import com.jaxvy.kunirx.UIState
 import com.jaxvy.kunirx.UIViewActivity
 import com.jaxvy.kunirx.todo.R
+import com.jaxvy.kunirx.todo.TodoApplication
 import com.jaxvy.kunirx.todo.di.IOScheduler
 import com.jaxvy.kunirx.todo.di.MainScheduler
-import com.jaxvy.kunirx.todo.di.inject
 import com.jaxvy.kunirx.todo.model.Todo
-import com.jaxvy.kunirx.todo.ui.list.ClickAddNewTodoUIAction
-import com.jaxvy.kunirx.todo.ui.list.OpenTodosViewUIAction
-import com.jaxvy.kunirx.todo.ui.list.UpdateTodoCheckmarkUIAction
+import com.jaxvy.kunirx.todo.ui.list.action.ClickCreateTodoButtonUIAction
+import com.jaxvy.kunirx.todo.ui.list.action.OpenTodosViewUIAction
+import com.jaxvy.kunirx.todo.ui.list.action.UpdateTodoCheckmarkUIAction
 import dagger.Reusable
 import io.reactivex.Observable
 import io.reactivex.Scheduler
-import kotlinx.android.synthetic.main.activity_todo.*
+import kotlinx.android.synthetic.main.activity_todo_list.*
 import javax.inject.Inject
 
 data class TodoActivityUIState(
@@ -27,19 +27,19 @@ data class TodoActivityUIState(
     val isFetchingTodos: Boolean = false
 ) : UIState
 
-class TodoActivity : UIViewActivity<TodoActivityUIState>() {
+class TodoListActivity : UIViewActivity<TodoActivityUIState>() {
 
     @Inject
-    lateinit var uiUIActionHandlerConfig: UIActionHandlerConfig
+    lateinit var uiActionHandlerConfig: UIActionHandlerConfig
 
-    override fun uiActionHandlerConfiguration() = uiUIActionHandlerConfig
+    override fun uiActionHandlerConfiguration() = uiActionHandlerConfig
 
     private lateinit var todoListAdapter: TodoListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        inject(this)
+        (applicationContext as TodoApplication).todoComponent.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_todo)
+        setContentView(R.layout.activity_todo_list)
 
         uiState = TodoActivityUIState(
             todos = emptyList()
@@ -47,7 +47,7 @@ class TodoActivity : UIViewActivity<TodoActivityUIState>() {
 
         todoListAdapter = TodoListAdapter()
         todoRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@TodoActivity)
+            layoutManager = LinearLayoutManager(this@TodoListActivity)
             adapter = todoListAdapter
         }
     }
@@ -66,8 +66,8 @@ class TodoActivity : UIViewActivity<TodoActivityUIState>() {
         return Observable.mergeArray(
             todoListAdapter.uiActionInputObservable(),
 
-            addNewTodoButton.clicks()
-                .map { ClickAddNewTodoUIAction.Input() }
+            createTodoButton.clicks()
+                .map { ClickCreateTodoButtonUIAction.Input(this) }
         ).startWith(OpenTodosViewUIAction.Input())
     }
 }
@@ -76,12 +76,12 @@ class TodoActivity : UIViewActivity<TodoActivityUIState>() {
 class UIActionHandlerConfig @Inject constructor(
     @MainScheduler override var mainScheduler: Scheduler,
     @IOScheduler override var ioScheduler: Scheduler,
-    clickAddNewTodoUIAction: ClickAddNewTodoUIAction,
+    clickCreateTodoButtonUIAction: ClickCreateTodoButtonUIAction,
     openTodosViewUIAction: OpenTodosViewUIAction,
     updateTodoCheckmarkUIAction: UpdateTodoCheckmarkUIAction
 ) : UIActionHandler.Configuration(
     uiActions = listOf(
-        clickAddNewTodoUIAction,
+        clickCreateTodoButtonUIAction,
         openTodosViewUIAction,
         updateTodoCheckmarkUIAction
     )

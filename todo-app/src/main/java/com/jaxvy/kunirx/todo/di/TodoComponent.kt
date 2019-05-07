@@ -1,17 +1,14 @@
 package com.jaxvy.kunirx.todo.di
 
-import com.jaxvy.kunirx.todo.ui.TodoActivity
-import com.jaxvy.kunirx.todo.TodoApplication
+import com.jaxvy.kunirx.todo.ui.create.TodoCreateActivity
+import com.jaxvy.kunirx.todo.ui.list.TodoListActivity
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [TodoModule::class])
 interface TodoComponent {
-
-    fun inject(TodoActivity: TodoActivity)
+    fun inject(todoListActivity: TodoListActivity)
+    fun inject(todoCreateActivity: TodoCreateActivity)
 }
 
-fun TodoActivity.inject(TodoActivity: TodoActivity) {
-    (applicationContext as TodoApplication).todoComponent.inject(TodoActivity)
-}

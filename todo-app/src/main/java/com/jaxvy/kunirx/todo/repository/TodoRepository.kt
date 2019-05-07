@@ -10,7 +10,7 @@ class TodoRepository @Inject constructor() {
     private val todos: MutableList<Todo> = mutableListOf()
 
     init {
-        (1..100).forEach { create(id = it.toLong(), text = "todo item$it") }
+        (1..5).forEach { create(id = it.toLong(), text = "todo item$it") }
     }
 
     fun create(id: Long, text: String) {
