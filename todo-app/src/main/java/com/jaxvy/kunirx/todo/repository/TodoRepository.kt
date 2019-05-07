@@ -25,7 +25,7 @@ class TodoRepository @Inject constructor() {
         getById(id)?.run { isComplete = true }
     }
 
-    fun markAsUnComplete(id: Long) {
+    fun markAsIncomplete(id: Long) {
         getById(id)?.run { isComplete = false }
     }
 

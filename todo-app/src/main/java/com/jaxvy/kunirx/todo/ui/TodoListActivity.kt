@@ -3,6 +3,7 @@ package com.jaxvy.kunirx.todo.ui
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jakewharton.rxbinding3.view.clicks
 import com.jaxvy.kunirx.UIAction
 import com.jaxvy.kunirx.UIActionHandler
 import com.jaxvy.kunirx.UIState
@@ -12,8 +13,9 @@ import com.jaxvy.kunirx.todo.di.IOScheduler
 import com.jaxvy.kunirx.todo.di.MainScheduler
 import com.jaxvy.kunirx.todo.di.inject
 import com.jaxvy.kunirx.todo.model.Todo
-import com.jaxvy.kunirx.todo.ui.action.OpenTodosViewUIAction
-import com.jaxvy.kunirx.todo.ui.action.UpdateTodoCheckmarkUIAction
+import com.jaxvy.kunirx.todo.ui.list.ClickAddNewTodoUIAction
+import com.jaxvy.kunirx.todo.ui.list.OpenTodosViewUIAction
+import com.jaxvy.kunirx.todo.ui.list.UpdateTodoCheckmarkUIAction
 import dagger.Reusable
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -25,22 +27,14 @@ data class TodoActivityUIState(
     val isFetchingTodos: Boolean = false
 ) : UIState
 
-@Reusable
-class TodoActivityUIActionConfig @Inject constructor(
-    @MainScheduler override var mainScheduler: Scheduler,
-    @IOScheduler override var ioScheduler: Scheduler,
-    openTodosViewUIAction: OpenTodosViewUIAction,
-    updateTodoCheckmarkUIAction: UpdateTodoCheckmarkUIAction
-) : UIActionHandler.Configuration(
-    uiActions = listOf(
-        openTodosViewUIAction,
-        updateTodoCheckmarkUIAction
-    )
-)
-
 class TodoActivity : UIViewActivity<TodoActivityUIState>() {
 
-    private lateinit var todoAdapter: TodoAdapter
+    @Inject
+    lateinit var uiUIActionHandlerConfig: UIActionHandlerConfig
+
+    override fun uiActionHandlerConfiguration() = uiUIActionHandlerConfig
+
+    private lateinit var todoListAdapter: TodoListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         inject(this)
@@ -51,17 +45,12 @@ class TodoActivity : UIViewActivity<TodoActivityUIState>() {
             todos = emptyList()
         )
 
-        todoAdapter = TodoAdapter()
+        todoListAdapter = TodoListAdapter()
         todoRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@TodoActivity)
-            adapter = todoAdapter
+            adapter = todoListAdapter
         }
     }
-
-    @Inject
-    lateinit var uiActionConfig: TodoActivityUIActionConfig
-
-    override fun uiActionHandlerConfiguration(): UIActionHandler.Configuration = uiActionConfig
 
     override fun render(uiState: TodoActivityUIState) {
         if (uiState.isFetchingTodos) {
@@ -69,17 +58,31 @@ class TodoActivity : UIViewActivity<TodoActivityUIState>() {
         } else {
             loadingProgressBar.visibility = View.GONE
 
-            todoAdapter.update(todos = uiState.todos)
+            todoListAdapter.update(todos = uiState.todos)
         }
     }
 
     override fun uiActionInputObservable(): Observable<UIAction.Input> {
-        return Observable
-            .mergeArray(
-                todoAdapter.uiActionInputObservable().map {
-                    it
-                }
-            )
-            .startWith(OpenTodosViewUIAction.Input())
+        return Observable.mergeArray(
+            todoListAdapter.uiActionInputObservable(),
+
+            addNewTodoButton.clicks()
+                .map { ClickAddNewTodoUIAction.Input() }
+        ).startWith(OpenTodosViewUIAction.Input())
     }
 }
+
+@Reusable
+class UIActionHandlerConfig @Inject constructor(
+    @MainScheduler override var mainScheduler: Scheduler,
+    @IOScheduler override var ioScheduler: Scheduler,
+    clickAddNewTodoUIAction: ClickAddNewTodoUIAction,
+    openTodosViewUIAction: OpenTodosViewUIAction,
+    updateTodoCheckmarkUIAction: UpdateTodoCheckmarkUIAction
+) : UIActionHandler.Configuration(
+    uiActions = listOf(
+        clickAddNewTodoUIAction,
+        openTodosViewUIAction,
+        updateTodoCheckmarkUIAction
+    )
+)

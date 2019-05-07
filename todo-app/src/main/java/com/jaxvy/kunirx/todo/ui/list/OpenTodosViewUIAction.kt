@@ -1,4 +1,4 @@
-package com.jaxvy.kunirx.todo.ui.action
+package com.jaxvy.kunirx.todo.ui.list
 
 import com.jaxvy.kunirx.UIAction
 import com.jaxvy.kunirx.todo.model.Todo
@@ -28,7 +28,11 @@ class OpenTodosViewUIAction @Inject constructor(
 
     override fun execute(input: Input): Observable<GetTodosMutator> {
         return Observable
-            .just<GetTodosMutator>(GetTodosMutator.Result(todoRepository.getAll()))
+            .just<GetTodosMutator>(
+                GetTodosMutator.Result(
+                    todoRepository.getAll()
+                )
+            )
             .delay(LOAD_DELAY, TimeUnit.MILLISECONDS)
             .startWith(GetTodosMutator.Start)
     }

@@ -1,4 +1,4 @@
-package com.jaxvy.kunirx.todo.ui.action
+package com.jaxvy.kunirx.todo.ui.list
 
 import com.jaxvy.kunirx.UIAction
 import com.jaxvy.kunirx.todo.model.Todo
@@ -22,15 +22,17 @@ class UpdateTodoCheckmarkUIAction @Inject constructor(
     }
 
     override fun execute(
-        input: UpdateTodoCheckmarkUIAction.Input
+        input: Input
     ): Observable<UpdateTodoCheckmarkMutator> {
         if (input.isChecked) {
             todoRepository.markAsComplete(input.id)
         } else {
-            todoRepository.markAsUnComplete(input.id)
+            todoRepository.markAsIncomplete(input.id)
         }
         return Observable.just<UpdateTodoCheckmarkMutator>(
-            UpdateTodoCheckmarkMutator.Result(todoRepository.getAll())
+            UpdateTodoCheckmarkMutator.Result(
+                todoRepository.getAll()
+            )
         )
     }
 
