@@ -5,7 +5,7 @@ import com.jaxvy.kunirx.UIAction
 import com.jaxvy.kunirx.todo.repository.TodoRepository
 import com.jaxvy.kunirx.todo.ui.create.TodoCreateActivityUIState
 import com.jaxvy.kunirx.todo.ui.create.action.SaveDescriptionUIAction.Input
-import com.jaxvy.kunirx.todo.utils.KunirxSideEffectUIAction
+import com.jaxvy.kunirx.utils.KunirxSideEffectUIAction
 import dagger.Reusable
 import java.lang.ref.WeakReference
 import javax.inject.Inject

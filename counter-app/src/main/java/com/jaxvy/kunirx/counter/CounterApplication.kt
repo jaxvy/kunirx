@@ -1,9 +1,9 @@
 package com.jaxvy.kunirx.counter
 
 import android.app.Application
-import com.jaxvy.kunirx.counter.di.DaggerCounterComponent
 import com.jaxvy.kunirx.counter.di.CounterComponent
 import com.jaxvy.kunirx.counter.di.CounterModule
+import com.jaxvy.kunirx.counter.di.DaggerCounterComponent
 
 class CounterApplication : Application() {
 
@@ -13,7 +13,7 @@ class CounterApplication : Application() {
         super.onCreate()
 
         counterComponent = DaggerCounterComponent.builder()
-                .counterModule(CounterModule())
-                .build()
+            .counterModule(CounterModule())
+            .build()
     }
 }

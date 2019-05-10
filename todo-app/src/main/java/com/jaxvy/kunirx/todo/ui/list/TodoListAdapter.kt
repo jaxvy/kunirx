@@ -8,8 +8,8 @@ import com.jaxvy.kunirx.UIAction
 import com.jaxvy.kunirx.todo.R
 import com.jaxvy.kunirx.todo.model.Todo
 import com.jaxvy.kunirx.todo.ui.list.action.UpdateTodoCheckmarkUIAction
-import com.jaxvy.kunirx.todo.utils.KunirxAdapter
-import com.jaxvy.kunirx.todo.utils.KunirxViewHolder
+import com.jaxvy.kunirx.utils.KunirxAdapter
+import com.jaxvy.kunirx.utils.KunirxViewHolder
 import io.reactivex.Observable
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.adapter_item_todo.*

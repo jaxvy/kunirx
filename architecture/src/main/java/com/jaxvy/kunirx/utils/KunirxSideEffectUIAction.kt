@@ -1,10 +1,10 @@
-package com.jaxvy.kunirx.todo.utils
+package com.jaxvy.kunirx.utils
 
 import com.jaxvy.kunirx.UIAction
 import com.jaxvy.kunirx.UIState
 import io.reactivex.Observable
 
-// Sample side effect base UIAction that only executes some logic and does not update the UIState
+// Side effect UIAction that only executes some logic and does not update the UIState
 abstract class KunirxSideEffectUIAction<U : UIState, in E : UIAction.Input> :
     UIAction<U, E, KunirxSideEffectUIAction.SideEffectMutator> {
 

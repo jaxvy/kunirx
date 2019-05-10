@@ -1,8 +1,8 @@
 package com.jaxvy.kunirx.counter.di
 
-import dagger.Component
 import com.jaxvy.kunirx.counter.CounterApplication
 import com.jaxvy.kunirx.counter.ui.CounterActivity
+import dagger.Component
 import javax.inject.Singleton
 
 @Singleton

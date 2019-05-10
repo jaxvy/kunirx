@@ -17,20 +17,20 @@ import kotlinx.android.synthetic.main.activity_counter.*
 import javax.inject.Inject
 
 data class CounterActivityUIState(
-        val counterValue: Int = 0
+    val counterValue: Int = 0
 ) : UIState
 
 @Reusable
 class CounterActivityUIActionConfig @Inject constructor(
-        @MainScheduler override var mainScheduler: Scheduler,
-        @IOScheduler override var ioScheduler: Scheduler,
-        incrementClickUIAction: IncrementClickUIAction,
-        decrementClickUIAction: DecrementClickUIAction
+    @MainScheduler override var mainScheduler: Scheduler,
+    @IOScheduler override var ioScheduler: Scheduler,
+    incrementClickUIAction: IncrementClickUIAction,
+    decrementClickUIAction: DecrementClickUIAction
 ) : UIActionHandler.Configuration(
-        uiActions = listOf(
-                incrementClickUIAction,
-                decrementClickUIAction
-        )
+    uiActions = listOf(
+        incrementClickUIAction,
+        decrementClickUIAction
+    )
 )
 
 // Activity extends from UIViewActivity which provides the necessary logic to execute actions and
@@ -45,13 +45,13 @@ class CounterActivity : UIViewActivity<CounterActivityUIState>() {
     // Using RxBindings to trigger UIActions.
     override fun uiActionInputObservable(): Observable<UIAction.Input> {
         return Observable.mergeArray(
-                incrementButton
-                        .clicks()
-                        .map { IncrementClickUIAction.Input(currentValue = uiState.counterValue) },
+            incrementButton
+                .clicks()
+                .map { IncrementClickUIAction.Input(currentValue = uiState.counterValue) },
 
-                decrementButton
-                        .clicks()
-                        .map { DecrementClickUIAction.Input(currentValue = uiState.counterValue) }
+            decrementButton
+                .clicks()
+                .map { DecrementClickUIAction.Input(currentValue = uiState.counterValue) }
         )
     }
 

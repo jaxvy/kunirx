@@ -1,4 +1,4 @@
-package com.jaxvy.kunirx.todo.utils
+package com.jaxvy.kunirx.utils
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

@@ -6,7 +6,7 @@ import com.jaxvy.kunirx.UIAction
 import com.jaxvy.kunirx.todo.ui.create.TodoCreateActivity
 import com.jaxvy.kunirx.todo.ui.list.TodoActivityUIState
 import com.jaxvy.kunirx.todo.ui.list.action.ClickCreateTodoButtonUIAction.Input
-import com.jaxvy.kunirx.todo.utils.KunirxSideEffectUIAction
+import com.jaxvy.kunirx.utils.KunirxSideEffectUIAction
 import dagger.Reusable
 import java.lang.ref.WeakReference
 import javax.inject.Inject

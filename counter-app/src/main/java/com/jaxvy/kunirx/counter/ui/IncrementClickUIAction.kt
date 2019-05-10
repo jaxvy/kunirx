@@ -11,15 +11,15 @@ import javax.inject.Inject
 // its execution.
 @Reusable
 class IncrementClickUIAction @Inject constructor() :
-        UIAction<CounterActivityUIState, Input, CounterClickMutator> {
+    UIAction<CounterActivityUIState, Input, CounterClickMutator> {
 
     class Input(val currentValue: Int) : UIAction.Input
 
     override fun execute(input: Input): Observable<CounterClickMutator> {
         return Observable
-                .just<CounterClickMutator>(CounterClickMutator.Success(input.currentValue + 1))
-                .startWith(CounterClickMutator.Loading)
-                .onErrorReturn { throwable -> CounterClickMutator.Error(throwable) }
+            .just<CounterClickMutator>(CounterClickMutator.Success(input.currentValue + 1))
+            .startWith(CounterClickMutator.Loading)
+            .onErrorReturn { throwable -> CounterClickMutator.Error(throwable) }
     }
 
     sealed class CounterClickMutator : UIAction.UIStateMutator {
@@ -29,8 +29,8 @@ class IncrementClickUIAction @Inject constructor() :
     }
 
     override fun reduce(
-            uiState: CounterActivityUIState,
-            uiStateMutator: CounterClickMutator
+        uiState: CounterActivityUIState,
+        uiStateMutator: CounterClickMutator
     ): CounterActivityUIState {
         return when (uiStateMutator) {
             is CounterClickMutator.Loading -> uiState

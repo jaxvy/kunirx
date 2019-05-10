@@ -67,8 +67,8 @@ class TodoCreateActivity() : UIViewActivity<TodoCreateActivityUIState>() {
 class UIActionHandlerConfig @Inject constructor(
     @MainScheduler override var mainScheduler: Scheduler,
     @IOScheduler override var ioScheduler: Scheduler,
-    private val updateDescriptionUIAction: UpdateDescriptionUIAction,
-    private val saveDescriptionUIAction: SaveDescriptionUIAction
+    updateDescriptionUIAction: UpdateDescriptionUIAction,
+    saveDescriptionUIAction: SaveDescriptionUIAction
 ) : UIActionHandler.Configuration(
     uiActions = listOf(
         updateDescriptionUIAction,
