@@ -4,7 +4,6 @@ import io.reactivex.Observable
 
 interface UIAction<U : UIState, in E : UIAction.Input, M : UIAction.UIStateMutator> {
 
-
     // Input needs to be defined inside its corresponding UIAction. This is necessary for
     // UIActionHandler to match a given Input to its corresponding UIAction.
     interface Input
