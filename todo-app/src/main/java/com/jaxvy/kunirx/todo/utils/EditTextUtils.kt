@@ -4,10 +4,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import com.jakewharton.rxbinding3.InitialValueObservable
+import com.jaxvy.kunirx.todo.utils.EditTextAfterTextChangeWithFocusEventObservable.EditTextAfterTextChangeEvent
 import io.reactivex.Observer
 import io.reactivex.android.MainThreadDisposable
-
-fun EditText.textChangesWhenFocused() = EditTextAfterTextChangeWithFocusEventObservable(this)
 
 // Does not trigger text changed events
 fun EditText.setTextSilently(newText: String) {
@@ -24,7 +23,7 @@ fun EditText.setTextSilently(newText: String) {
     }
 }
 
-class EditTextAfterTextChangeEvent(val text: String)
+fun EditText.textChangesWhenFocused() = EditTextAfterTextChangeWithFocusEventObservable(this)
 
 // Only triggered if users are typing (EditText is focused)
 class EditTextAfterTextChangeWithFocusEventObservable(
@@ -70,4 +69,6 @@ class EditTextAfterTextChangeWithFocusEventObservable(
             view.removeTextChangedListener(this)
         }
     }
+
+    class EditTextAfterTextChangeEvent(val text: String)
 }
