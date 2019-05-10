@@ -3,6 +3,7 @@ package com.jaxvy.kunirx
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import io.reactivex.Observable
+import java.lang.ref.WeakReference
 
 interface UIState
 
@@ -29,7 +30,7 @@ abstract class UIViewActivity<U : UIState> : UIView<U>, AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         uiActionHandler = UIActionHandler(uiActionHandlerConfiguration())
-        uiActionHandler.start(this)
+        uiActionHandler.start(WeakReference(this))
 
         render(uiState)
     }
@@ -50,7 +51,7 @@ abstract class UIViewFragment<U : UIState> : UIView<U>, Fragment() {
     override fun onStart() {
         super.onStart()
         uiActionHandler = UIActionHandler(uiActionHandlerConfiguration())
-        uiActionHandler.start(this)
+        uiActionHandler.start(WeakReference(this))
 
         render(uiState)
     }

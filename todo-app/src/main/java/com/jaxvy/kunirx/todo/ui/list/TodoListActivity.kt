@@ -20,6 +20,7 @@ import dagger.Reusable
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import kotlinx.android.synthetic.main.activity_todo_list.*
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 data class TodoActivityUIState(
@@ -67,7 +68,7 @@ class TodoListActivity : UIViewActivity<TodoActivityUIState>() {
             todoListAdapter.uiActionInputObservable(),
 
             createTodoButton.clicks()
-                .map { ClickCreateTodoButtonUIAction.Input(this) }
+                .map { ClickCreateTodoButtonUIAction.Input(WeakReference(this)) }
         ).startWith(OpenTodosViewUIAction.Input())
     }
 }

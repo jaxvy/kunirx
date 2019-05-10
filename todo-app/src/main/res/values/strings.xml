@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Todo</string>
+    <string name="TodoCreateActivity_descriptionHint">To-do description</string>
 </resources>

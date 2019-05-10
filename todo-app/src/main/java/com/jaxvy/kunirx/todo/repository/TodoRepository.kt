@@ -10,26 +10,17 @@ class TodoRepository @Inject constructor() {
     private val todos: MutableList<Todo> = mutableListOf()
 
     init {
-        (1..5).forEach { create(id = it.toLong(), text = "todo item$it") }
+        (1..5).forEach { create(description = "Todo description $it") }
     }
 
-    fun create(id: Long, text: String) {
-        todos.add(Todo(id = id, text = text))
+    fun create(description: String) {
+        todos.add(Todo(id = todos.size.toLong(), description = description))
     }
-
-    fun getById(id: Long): Todo? = todos.find { it.id == id }
 
     fun getAll(): List<Todo> = todos
 
-    fun markAsComplete(id: Long) {
-        getById(id)?.run { isComplete = true }
-    }
-
-    fun markAsIncomplete(id: Long) {
-        getById(id)?.run { isComplete = false }
-    }
-
-    fun updateText(id: Long, newText: String) {
-        getById(id)?.run { text = newText }
+    fun mark(id: Long, complete: Boolean) {
+        todos.find { it.id == id }
+            ?.run { isComplete = complete }
     }
 }

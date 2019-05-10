@@ -4,6 +4,8 @@
     android:id="@+id/todoCheckBox"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:textSize="16sp"
+    android:layout_marginStart="@dimen/spacing_1x"
+    android:layout_marginTop="@dimen/spacing_1x"
+    android:layout_marginEnd="@dimen/spacing_1x"
+    android:textSize="@dimen/text_size_normal"
     tools:text="Todo item" />

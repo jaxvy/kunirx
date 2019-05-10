@@ -5,6 +5,7 @@ import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import java.lang.ref.WeakReference
 
 // Executes UIActions and using the updated UIState, renders the UIViews
 class UIActionHandler<U : UIState>(
@@ -12,9 +13,9 @@ class UIActionHandler<U : UIState>(
 ) {
     private lateinit var compositeDisposable: CompositeDisposable
 
-    fun start(uiView: UIView<U>) {
+    fun start(uiView: WeakReference<UIView<U>>) {
         compositeDisposable = CompositeDisposable()
-        compositeDisposable.add(run(uiView))
+        uiView.get()?.run { compositeDisposable.add(run(this)) }
     }
 
     private fun run(uiView: UIView<U>): Disposable {

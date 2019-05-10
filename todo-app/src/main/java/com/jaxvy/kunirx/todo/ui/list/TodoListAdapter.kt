@@ -59,7 +59,7 @@ class TodoListAdapter : KunirxAdapter<TodoListAdapter.TodoViewHolder>() {
         fun bind(todo: Todo) {
             this.todo = todo
             todoCheckBox.apply {
-                text = todo.text
+                text = todo.description
                 isChecked = todo.isComplete
             }
         }

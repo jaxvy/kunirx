@@ -4,6 +4,8 @@ import com.jaxvy.kunirx.UIAction
 import com.jaxvy.kunirx.todo.model.Todo
 import com.jaxvy.kunirx.todo.repository.TodoRepository
 import com.jaxvy.kunirx.todo.ui.list.TodoActivityUIState
+import com.jaxvy.kunirx.todo.ui.list.action.OpenTodosViewUIAction.GetTodosMutator
+import com.jaxvy.kunirx.todo.ui.list.action.OpenTodosViewUIAction.Input
 import dagger.Reusable
 import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
@@ -15,9 +17,7 @@ private const val LOAD_DELAY = 500L
 @Reusable
 class OpenTodosViewUIAction @Inject constructor(
     private val todoRepository: TodoRepository
-) : UIAction<TodoActivityUIState,
-        OpenTodosViewUIAction.Input,
-        OpenTodosViewUIAction.GetTodosMutator> {
+) : UIAction<TodoActivityUIState, Input, GetTodosMutator> {
 
     class Input : UIAction.Input
 
