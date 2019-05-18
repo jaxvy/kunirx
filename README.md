@@ -78,4 +78,4 @@ class MyActivity: UIActivity<MyActivity>{
 }
 ```
 
-Check out the [simple counter app](https://github.com/jaxvy/kunirx/tree/master/counter-app) and the [To-dos app](https://github.com/jaxvy/kunirx/tree/master/todo-app) to see more usage examples and ease of managing `UIAction`s with `Dagger2`.
+Check out the [simple counter app](https://github.com/jaxvy/kunirx/tree/master/counter-app) and the [To-dos app](https://github.com/jaxvy/kunirx/tree/master/todo-app) to see more usage examples, unit tests and ease of managing `UIAction`s with `Dagger2`.
