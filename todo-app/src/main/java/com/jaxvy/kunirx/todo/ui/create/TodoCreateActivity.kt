@@ -30,7 +30,7 @@ class TodoCreateActivity() : UIViewActivity<TodoCreateActivityUIState>() {
     @Inject
     lateinit var uiActionHandlerConfig: UIActionHandlerConfig
 
-    override fun uiActionHandlerConfiguration() = uiActionHandlerConfig
+    override fun uiActionHandlerConfig() = uiActionHandlerConfig
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as TodoApplication).todoComponent.inject(this)
@@ -42,7 +42,7 @@ class TodoCreateActivity() : UIViewActivity<TodoCreateActivityUIState>() {
         )
     }
 
-    override fun uiActionInputObservable(): Observable<UIAction.Input> {
+    override fun react(): Observable<UIAction.Input> {
         return Observable.mergeArray(
             saveButton.clicks()
                 .map {

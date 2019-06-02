@@ -19,9 +19,9 @@ class UIActionHandler<U : UIState>(
     }
 
     private fun run(uiView: UIView<U>): Disposable {
-        return uiView.uiActionInputObservable()
+        return uiView.react()
             .flatMap { input ->
-                findUIActionByInput(uiView.uiActionHandlerConfiguration().uiActions, input)
+                findUIActionByInput(uiView.uiActionHandlerConfig().uiActions, input)
                     ?.let { uiAction ->
                         uiAction.execute(input)
                             .map { mutator -> uiAction.reduce(uiView.uiState, mutator) }

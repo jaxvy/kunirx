@@ -33,7 +33,7 @@ class TodoListActivity : UIViewActivity<TodoActivityUIState>() {
     @Inject
     lateinit var uiActionHandlerConfig: UIActionHandlerConfig
 
-    override fun uiActionHandlerConfiguration() = uiActionHandlerConfig
+    override fun uiActionHandlerConfig() = uiActionHandlerConfig
 
     private lateinit var todoListAdapter: TodoListAdapter
 
@@ -53,6 +53,15 @@ class TodoListActivity : UIViewActivity<TodoActivityUIState>() {
         }
     }
 
+    override fun react(): Observable<UIAction.Input> {
+        return Observable.mergeArray(
+            todoListAdapter.uiActionInputObservable(),
+
+            createTodoButton.clicks()
+                .map { ClickCreateTodoButtonUIAction.Input(WeakReference(this)) }
+        ).startWith(OpenTodosViewUIAction.Input())
+    }
+
     override fun render(uiState: TodoActivityUIState) {
         if (uiState.isFetchingTodos) {
             loadingProgressBar.visibility = View.VISIBLE
@@ -61,15 +70,6 @@ class TodoListActivity : UIViewActivity<TodoActivityUIState>() {
 
             todoListAdapter.update(todos = uiState.todos)
         }
-    }
-
-    override fun uiActionInputObservable(): Observable<UIAction.Input> {
-        return Observable.mergeArray(
-            todoListAdapter.uiActionInputObservable(),
-
-            createTodoButton.clicks()
-                .map { ClickCreateTodoButtonUIAction.Input(WeakReference(this)) }
-        ).startWith(OpenTodosViewUIAction.Input())
     }
 }
 

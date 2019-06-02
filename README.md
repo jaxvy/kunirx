@@ -60,19 +60,18 @@ class IncrementClickUIAction: UIAction<MyActivityUIState, Input, ClickMutator> {
   }
 }
 ```
-That's it! The updated `UIState` will call the `render()` function callback on the `MyActivity` and the UI can be rendered consistently. The `Activity` in this case only needs to provide 3 callbacks; 1 for registering the `UIAction`, triggering the `UIAction` and handling the results:
+That's it! The updated `UIState` will call the `render()` function callback on the `MyActivity` and the UI can be rendered consistently. The `Activity` in this case only needs to provide 3 callbacks; 1 for configuring `UIAction`s to be used, 1 for reacting to `UIAction`s and 1 for handling the results:
 
 ```kotlin
 class MyActivity: UIActivity<MyActivity>{
 
-  // Register the UIAction
+  // Configure UIActions to be used
   override fun uiActionHandlerConfiguration() = object: UIActionHandler.Configuration(
     uiActions = listOf(IncrementClickUIAction)
   )
 
-  //Trigger the UIAction
-  override fun uiActionInputObservable(): Observable<UIAction.Input> {
-    // Works great with RxBindings
+  //React to UIActions - works great with RxBindings
+  override fun react(): Observable<UIAction.Input> {
     return incrementButton
               .clicks()
               .map { IncrementClickUIAction.Input(currentValue = uiState.counterValue) },

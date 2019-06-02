@@ -13,9 +13,9 @@ interface UIView<U : UIState> {
 
     var uiActionHandler: UIActionHandler<U>
 
-    fun uiActionHandlerConfiguration(): UIActionHandler.Configuration
+    fun uiActionHandlerConfig(): UIActionHandler.Configuration
 
-    fun uiActionInputObservable(): Observable<UIAction.Input>
+    fun react(): Observable<UIAction.Input>
 
     fun render(uiState: U)
 }
@@ -29,7 +29,7 @@ abstract class UIViewActivity<U : UIState> : UIView<U>, AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        uiActionHandler = UIActionHandler(uiActionHandlerConfiguration())
+        uiActionHandler = UIActionHandler(uiActionHandlerConfig())
         uiActionHandler.start(WeakReference(this))
 
         render(uiState)
@@ -50,7 +50,7 @@ abstract class UIViewFragment<U : UIState> : UIView<U>, Fragment() {
 
     override fun onStart() {
         super.onStart()
-        uiActionHandler = UIActionHandler(uiActionHandlerConfiguration())
+        uiActionHandler = UIActionHandler(uiActionHandlerConfig())
         uiActionHandler.start(WeakReference(this))
 
         render(uiState)

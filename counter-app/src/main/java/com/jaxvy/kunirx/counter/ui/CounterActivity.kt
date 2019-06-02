@@ -40,10 +40,10 @@ class CounterActivity : UIViewActivity<CounterActivityUIState>() {
     @Inject
     lateinit var uiActionConfig: CounterActivityUIActionConfig
 
-    override fun uiActionHandlerConfiguration() = uiActionConfig
+    override fun uiActionHandlerConfig() = uiActionConfig
 
     // Using RxBindings to trigger UIActions.
-    override fun uiActionInputObservable(): Observable<UIAction.Input> {
+    override fun react(): Observable<UIAction.Input> {
         return Observable.mergeArray(
             incrementButton
                 .clicks()
