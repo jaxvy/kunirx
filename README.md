@@ -8,8 +8,8 @@ First we need to define a `UIState` object and a corresponding `Activity`/`Fragm
 ```kotlin
 data class MyActivityUIState(
   val counter: Int,
-  val isUpdating: Boolean, // In case we want to update UI while the counter is being incremented
-  val error: Throwable // In case we want to report an error back to the UI
+  val isUpdating: Boolean,  // In case we want to update UI while the counter is being incremented
+  val error: Throwable      // In case we want to report an error back to the UI
 ): UIState
 
 class MyActivity: UIActivity<MyActivityUIState>{
@@ -60,19 +60,18 @@ class IncrementClickUIAction: UIAction<MyActivityUIState, Input, ClickMutator> {
   }
 }
 ```
-That's it! The updated `UIState` will call the `render()` function callback on the `MyActivity` and the UI can be rendered consistently. The `Activity` in this case only needs to provide 3 callbacks; 1 for registering the `UIAction`, triggering the `UIAction` and handling the results:
+That's it! The updated `UIState` will call the `render()` function callback on the `MyActivity` and the UI can be rendered consistently. The `Activity` in this case only needs to provide 3 callbacks; 1 for configuring `UIAction`s to be used, 1 for reacting to `UIAction`s and 1 for handling the results:
 
 ```kotlin
-class MyActivity: UIActivity<MyActivity>{
+class MyActivity: UIActivity<MyActivityUIState>{
 
-  // Register the UIAction
-  override fun uiActionHandlerConfiguration() = object: UIActionHandler.Configuration(
+  // Configure UIActions to be used
+  override fun uiActionConfig() = object: UIActionConfig(
     uiActions = listOf(IncrementClickUIAction)
   )
 
-  //Trigger the UIAction
-  override fun uiActionInputObservable(): Observable<UIAction.Input> {
-    // Works great with RxBindings
+  //React to UIActions - works great with RxBindings
+  override fun react(): Observable<UIAction.Input> {
     return incrementButton
               .clicks()
               .map { IncrementClickUIAction.Input(currentValue = uiState.counterValue) },
@@ -84,4 +83,4 @@ class MyActivity: UIActivity<MyActivity>{
 }
 ```
 
-Check out the [simple counter app](https://github.com/jaxvy/kunirx/tree/master/counter-app) and the [To-dos app](https://github.com/jaxvy/kunirx/tree/master/todo-app) to see more usage examples, unit tests and ease of managing `UIAction`s with `Dagger2`.
+Check out the [simple counter app](https://github.com/jaxvy/kunirx/tree/master/counter-app) and the [To-do app](https://github.com/jaxvy/kunirx/tree/master/todo-app) to see more usage examples, unit tests and ease of managing `UIAction`s with `Dagger2`.

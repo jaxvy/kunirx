@@ -3,7 +3,7 @@ package com.jaxvy.kunirx.counter.ui
 import android.os.Bundle
 import com.jakewharton.rxbinding3.view.clicks
 import com.jaxvy.kunirx.UIAction
-import com.jaxvy.kunirx.UIActionHandler
+import com.jaxvy.kunirx.UIActionConfig
 import com.jaxvy.kunirx.UIState
 import com.jaxvy.kunirx.UIViewActivity
 import com.jaxvy.kunirx.counter.R
@@ -26,7 +26,7 @@ class CounterActivityUIActionConfig @Inject constructor(
     @IOScheduler override var ioScheduler: Scheduler,
     incrementClickUIAction: IncrementClickUIAction,
     decrementClickUIAction: DecrementClickUIAction
-) : UIActionHandler.Configuration(
+) : UIActionConfig(
     uiActions = listOf(
         incrementClickUIAction,
         decrementClickUIAction
@@ -40,20 +40,7 @@ class CounterActivity : UIViewActivity<CounterActivityUIState>() {
     @Inject
     lateinit var uiActionConfig: CounterActivityUIActionConfig
 
-    override fun uiActionHandlerConfiguration() = uiActionConfig
-
-    // Using RxBindings to trigger UIActions.
-    override fun uiActionInputObservable(): Observable<UIAction.Input> {
-        return Observable.mergeArray(
-            incrementButton
-                .clicks()
-                .map { IncrementClickUIAction.Input(currentValue = uiState.counterValue) },
-
-            decrementButton
-                .clicks()
-                .map { DecrementClickUIAction.Input(currentValue = uiState.counterValue) }
-        )
-    }
+    override fun uiActionConfig() = uiActionConfig
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Note that although we use dagger here, it is not mandatory for kunirx to work.
@@ -66,8 +53,20 @@ class CounterActivity : UIViewActivity<CounterActivityUIState>() {
         uiState = CounterActivityUIState()
     }
 
-    // This is the callback the uiActionHandler uses. Given a "state" the view is always rendered
-    // consistently.
+    // Using RxBindings to react to UIActions.
+    override fun react(): Observable<UIAction.Input> {
+        return Observable.mergeArray(
+            incrementButton
+                .clicks()
+                .map { IncrementClickUIAction.Input(currentValue = uiState.counterValue) },
+
+            decrementButton
+                .clicks()
+                .map { DecrementClickUIAction.Input(currentValue = uiState.counterValue) }
+        )
+    }
+
+    // This is the callback which for the given "state" the view is always rendered consistently.
     override fun render(uiState: CounterActivityUIState) {
         counter.text = uiState.counterValue.toString()
     }
