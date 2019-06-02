@@ -2,10 +2,7 @@ package com.jaxvy.kunirx.todo.ui.create
 
 import android.os.Bundle
 import com.jakewharton.rxbinding3.view.clicks
-import com.jaxvy.kunirx.UIAction
-import com.jaxvy.kunirx.UIActionHandler
-import com.jaxvy.kunirx.UIState
-import com.jaxvy.kunirx.UIViewActivity
+import com.jaxvy.kunirx.*
 import com.jaxvy.kunirx.todo.R
 import com.jaxvy.kunirx.todo.TodoApplication
 import com.jaxvy.kunirx.todo.di.IOScheduler
@@ -28,9 +25,9 @@ data class TodoCreateActivityUIState(
 class TodoCreateActivity() : UIViewActivity<TodoCreateActivityUIState>() {
 
     @Inject
-    lateinit var uiActionHandlerConfig: UIActionHandlerConfig
+    lateinit var uiActionConfig: TodoCreateActivityUIActionConfig
 
-    override fun uiActionHandlerConfig() = uiActionHandlerConfig
+    override fun uiActionConfig() = uiActionConfig
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as TodoApplication).todoComponent.inject(this)
@@ -64,12 +61,12 @@ class TodoCreateActivity() : UIViewActivity<TodoCreateActivityUIState>() {
 }
 
 @Reusable
-class UIActionHandlerConfig @Inject constructor(
+class TodoCreateActivityUIActionConfig @Inject constructor(
     @MainScheduler override var mainScheduler: Scheduler,
     @IOScheduler override var ioScheduler: Scheduler,
     updateDescriptionUIAction: UpdateDescriptionUIAction,
     saveDescriptionUIAction: SaveDescriptionUIAction
-) : UIActionHandler.Configuration(
+) : UIActionConfig(
     uiActions = listOf(
         updateDescriptionUIAction,
         saveDescriptionUIAction

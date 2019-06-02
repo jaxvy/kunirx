@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jakewharton.rxbinding3.view.clicks
 import com.jaxvy.kunirx.UIAction
-import com.jaxvy.kunirx.UIActionHandler
+import com.jaxvy.kunirx.UIActionConfig
 import com.jaxvy.kunirx.UIState
 import com.jaxvy.kunirx.UIViewActivity
 import com.jaxvy.kunirx.todo.R
@@ -31,9 +31,9 @@ data class TodoActivityUIState(
 class TodoListActivity : UIViewActivity<TodoActivityUIState>() {
 
     @Inject
-    lateinit var uiActionHandlerConfig: UIActionHandlerConfig
+    lateinit var uiActionConfig: TodoListActivityUIActionConfig
 
-    override fun uiActionHandlerConfig() = uiActionHandlerConfig
+    override fun uiActionConfig() = uiActionConfig
 
     private lateinit var todoListAdapter: TodoListAdapter
 
@@ -74,13 +74,13 @@ class TodoListActivity : UIViewActivity<TodoActivityUIState>() {
 }
 
 @Reusable
-class UIActionHandlerConfig @Inject constructor(
+class TodoListActivityUIActionConfig @Inject constructor(
     @MainScheduler override var mainScheduler: Scheduler,
     @IOScheduler override var ioScheduler: Scheduler,
     clickCreateTodoButtonUIAction: ClickCreateTodoButtonUIAction,
     openTodosViewUIAction: OpenTodosViewUIAction,
     updateTodoCheckmarkUIAction: UpdateTodoCheckmarkUIAction
-) : UIActionHandler.Configuration(
+) : UIActionConfig(
     uiActions = listOf(
         clickCreateTodoButtonUIAction,
         openTodosViewUIAction,
