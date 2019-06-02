@@ -9,7 +9,7 @@ import java.lang.ref.WeakReference
 
 // Executes UIActions and using the updated UIState, renders the UIViews
 class UIActionHandler<U : UIState>(
-    private val UIActionConfig: UIActionConfig
+    private val uiActionConfig: UIActionConfig
 ) {
     private lateinit var compositeDisposable: CompositeDisposable
 
@@ -25,17 +25,17 @@ class UIActionHandler<U : UIState>(
                     ?.let { uiAction ->
                         uiAction.execute(input)
                             .map { mutator -> uiAction.reduce(uiView.uiState, mutator) }
-                            .subscribeOn(UIActionConfig.ioScheduler)
+                            .subscribeOn(uiActionConfig.ioScheduler)
                     }
                     ?: Observable.error<U>(
                         Throwable(
                             "$input not found in uiActionList, are you sure it's defined in " +
-                                    "your view's UIActionHandler.UIActionConfig?"
+                                    "your view's UIActionHandler.uiActionConfig?"
                         )
                     )
 
             }
-            .observeOn(UIActionConfig.mainScheduler)
+            .observeOn(uiActionConfig.mainScheduler)
             .subscribe(
                 { newUIState ->
                     uiView.apply {
